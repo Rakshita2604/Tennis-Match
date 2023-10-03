@@ -1,0 +1,30 @@
+
+-- Create the SQLite database (if it doesn't exist)
+ATTACH DATABASE 'table_tennis_db.db' AS table_tennis_db;
+
+-- Create the players table for player information
+CREATE TABLE IF NOT EXISTS table_tennis_db.players (
+    player_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    player_name TEXT NOT NULL,
+    gender TEXT CHECK (gender IN ('Male', 'Female')) NOT NULL,
+    UNIQUE(player_name)
+);
+
+-- Create the matches table for match details
+CREATE TABLE IF NOT EXISTS table_tennis_db.matches (
+    match_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    match_date DATE NOT NULL,
+    player1_id INTEGER NOT NULL,
+    player2_id INTEGER NOT NULL,
+    referee_id INTEGER NOT NULL,
+    FOREIGN KEY (player1_id) REFERENCES players(player_id),
+    FOREIGN KEY (player2_id) REFERENCES players(player_id),
+    FOREIGN KEY (referee_id) REFERENCES referees(referee_id)
+);
+
+-- Create the referees table for referee information
+CREATE TABLE IF NOT EXISTS table_tennis_db.referees (
+    referee_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    referee_name TEXT NOT NULL,
+    UNIQUE(referee_name)
+);
